@@ -115,7 +115,7 @@ def main():
     parser.add_argument("--which_gpu", "-gpu_id", default=0)
     parser.add_argument("--log_interval", type=int, default=1)
 
-    parser.add_argument("--dataset_dir", type=str, required=True)
+    parser.add_argument("--dataset_dir", type=str, default="datasets/", )#required=True)
 
     args = parser.parse_args()
 

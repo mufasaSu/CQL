@@ -13,7 +13,7 @@ from cs285.networks.mlp_policy import MLPPolicy
 
 def awac_config(
     total_steps: int = 50000,
-    discount: float = 0.95,
+    discount: float = 0.98,
     temperature: float = 1.0,
     actor_hidden_size: int = 128,
     actor_num_layers: int = 2,
