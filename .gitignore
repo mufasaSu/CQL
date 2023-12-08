@@ -1,2 +1,4 @@
 exploration_visualization/
 datasets/
+.DS_Store
+__pycache__/
