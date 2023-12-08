@@ -1,9 +1,9 @@
 base_config: "cql"
-env_name: "PointmassEasy-v0"
-exp_name: "pointmass_easy_cql"
+env_name: "esel"
+exp_name: "double_gyre_cql"
 use_double_q: true
-training_steps: 100000
-dataset_name: "pointmass_easy_rnd"
+training_steps: 10000
+dataset_name: "flattened_buffer_20231202-115430"
 
 cql_alpha: 0.1
 
