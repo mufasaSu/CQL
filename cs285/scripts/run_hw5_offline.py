@@ -16,8 +16,8 @@ import gym
 from gym import wrappers
 import numpy as np
 import torch
-from environment import Environment, SingleGyreFlowField, create_random_coordinate
-import environment
+from simulator import Environment, SingleGyreFlowField
+
 from cs285.infrastructure import pytorch_util as ptu
 import tqdm
 
@@ -29,8 +29,15 @@ from cs285.infrastructure.replay_buffer import MemoryEfficientReplayBuffer, Repl
 from scripting_utils import make_logger, make_config
 
 OBSERVATION_SHAPE = (2, )
+
+FLOW_FIELD = SingleGyreFlowField(width=20, height=20, center=(10, 10), radius=4, strength=1)
+
+ACTION_TYPE = "discrete"
 NUM_ACTIONS = 8
+MAGNITUDE = 1 # Magnitude of Action
+
 MAX_STEPS = 100
+THRESHOLD = 1
 
 # generate 2 random integers between 0 and 4
 
@@ -98,16 +105,13 @@ def run_training_loop(config: dict, logger: Logger, args: argparse.Namespace):
 
     # make the gym environment
     # env = config["make_env"]() # gym.make(config["env_name"]) <-- TODO Hier ändern
-    flow_field = SingleGyreFlowField(width=20, height=20, center=(10, 10), radius=4, strength=1)
-    start_sample_area_interval= [(1,3),(1,3)],
-    target_sample_area_interval= [(16, 19), (16, 19)]
-    start = create_random_coordinate(*start_sample_area_interval[0])
-    target = create_random_coordinate(*target_sample_area_interval)
+    start = [2.0, 2.0]
+    target = [18.0, 18.0]
     print("Start:", start)
     print("Target:", target)
-    buffer_ = environment.ReplayBuffer()
-    env = Environment(flow_field, list(start), target, threshold=1.0,
-                      buffer=buffer_, action_type="discrete", num_actions=NUM_ACTIONS)
+
+    env = Environment(FLOW_FIELD, list(start), target, threshold=THRESHOLD,
+                      action_type=ACTION_TYPE, num_actions=NUM_ACTIONS, magnitude=MAGNITUDE)
     state = env.reset()
     #discrete = isinstance(env.action_space, gym.spaces.Discrete) <-- entweder Action Space oder Agents anpassen
 

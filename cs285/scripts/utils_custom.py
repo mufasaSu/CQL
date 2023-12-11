@@ -34,13 +34,13 @@ def sample_trajectory(
             )
 
         # TODO use the most recent ob to decide what to do
-        #print("Current ob:", ob)
+        print("Current ob:", ob)
         ac = policy.get_action(ob)
 
         # TODO: take that action and get reward and next ob
         next_ob, rew, done = env.step(ac)
-        #print(next_ob)
-        #print(done)
+        print("Next ob: ", next_ob)
+        print("Done:", done)
 
         # TODO rollout can end due to done, or due to max_length
         steps += 1
