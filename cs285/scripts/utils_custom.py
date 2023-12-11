@@ -15,9 +15,9 @@ def sample_trajectory(
 ) -> Dict[str, np.ndarray]:
     """Sample a rollout in the environment from a policy."""
     ob = env.reset()
+    #print("Environment updated, current ob:", ob, "#################")
     obs, acs, rewards, next_obs, terminals, image_obs = [], [], [], [], [], []
     steps = 0
-
     while True:
         # render an image
         if render:
@@ -34,10 +34,13 @@ def sample_trajectory(
             )
 
         # TODO use the most recent ob to decide what to do
+        #print("Current ob:", ob)
         ac = policy.get_action(ob)
 
         # TODO: take that action and get reward and next ob
-        next_ob, rew, done, info = env.step(ac)
+        next_ob, rew, done = env.step(ac)
+        #print(next_ob)
+        #print(done)
 
         # TODO rollout can end due to done, or due to max_length
         steps += 1
@@ -57,10 +60,10 @@ def sample_trajectory(
             break
 
     episode_statistics = {"l": steps, "r": np.sum(rewards)}
-    if "episode" in info:
-        episode_statistics.update(info["episode"])
+    # if "episode" in info:
+    #     episode_statistics.update(info["episode"])
 
-    env.close()
+    #env.close()
 
     return {
         "observation": np.array(obs, dtype=np.float32),
@@ -100,6 +103,7 @@ def sample_n_trajectories(
     trajs = []
     for _ in range(ntraj):
         # collect rollout
+        #print(_)
         traj = sample_trajectory(env, policy, max_length, render)
         trajs.append(traj)
     return trajs

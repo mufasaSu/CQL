@@ -28,8 +28,9 @@ from cs285.infrastructure.replay_buffer import MemoryEfficientReplayBuffer, Repl
 
 from scripting_utils import make_logger, make_config
 
-OBSERVATION_SHAPE = (1602, )
+OBSERVATION_SHAPE = (2, )
 NUM_ACTIONS = 8
+MAX_STEPS = 100
 
 # generate 2 random integers between 0 and 4
 
@@ -104,7 +105,6 @@ def run_training_loop(config: dict, logger: Logger, args: argparse.Namespace):
     target = create_random_coordinate(*target_sample_area_interval)
     print("Start:", start)
     print("Target:", target)
-    max_steps = 100
     buffer_ = environment.ReplayBuffer()
     env = Environment(flow_field, list(start), target, threshold=1.0,
                       buffer=buffer_, action_type="discrete", num_actions=NUM_ACTIONS)
@@ -122,7 +122,7 @@ def run_training_loop(config: dict, logger: Logger, args: argparse.Namespace):
     # )
     agent = CQLAgent(OBSERVATION_SHAPE, NUM_ACTIONS, **config["agent_kwargs"])
 
-    ep_len = max_steps
+    ep_len = MAX_STEPS
 
     # # Open the HDF5 file
     # with h5py.File(os.path.join(args.dataset_dir, f"{config['dataset_name']}.h5"), 'r') as hdf:
@@ -186,13 +186,13 @@ def run_training_loop(config: dict, logger: Logger, args: argparse.Namespace):
                 logger.log_scalar(np.max(ep_lens), "eval/ep_len_max", step)
                 logger.log_scalar(np.min(ep_lens), "eval/ep_len_min", step)
 
-        #     env_pointmass: Pointmass = env.unwrapped
-        #     logger.log_figures(
-        #         [env_pointmass.plot_trajectory(trajectory["next_observation"]) for trajectory in trajectories],
-        #         "trajectories",
-        #         step,
-        #         "eval"
-        #     )
+            #env_pointmass: Pointmass = env.unwrapped
+            # logger.log_figures(
+            #     [env_pointmass.plot_trajectory(trajectory["next_observation"]) for trajectory in trajectories],
+            #     "trajectories",
+            #     step,
+            #     "eval"
+            # )
 
 
 def main():

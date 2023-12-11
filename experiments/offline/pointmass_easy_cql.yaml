@@ -3,7 +3,7 @@ env_name: "esel"
 exp_name: "double_gyre_cql"
 use_double_q: true
 training_steps: 10000
-dataset_name: "flattened_buffer_20231202-115430"
+dataset_name: "2D"
 
 cql_alpha: 0.1
 
